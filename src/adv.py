@@ -1,51 +1,108 @@
+import sys
+
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons",
+                     n= "foyer"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""",
+                n= "overlook",
+                s= "outside",
+                e= "narrow"),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""",
+                s= "foyer"),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""",
+                n= "treasure",
+                w= "foyer"),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""",
+                s= "narrow"),
 }
 
 
 # Link rooms together
 
-room['outside'].n_to = room['foyer']
-room['foyer'].s_to = room['outside']
-room['foyer'].n_to = room['overlook']
-room['foyer'].e_to = room['narrow']
-room['overlook'].s_to = room['foyer']
-room['narrow'].w_to = room['foyer']
-room['narrow'].n_to = room['treasure']
-room['treasure'].s_to = room['narrow']
+# room['outside'].n_to = room['foyer']
+# room['foyer'].s_to = room['outside']
+# room['foyer'].n_to = room['overlook']
+# room['foyer'].e_to = room['narrow']
+# room['overlook'].s_to = room['foyer']
+# room['narrow'].w_to = room['foyer']
+# room['narrow'].n_to = room['treasure']
+# room['treasure'].s_to = room['narrow']
 
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+player = Player("Scott", room['outside'])
 
 # Write a loop that:
+
+userInput= 0
+
+# while not userInput == 'q':
+currRoom= player.current_room
 #
 # * Prints the current room name
+
+
 # * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
+roomName = (key for key, val in room.items())
+print(f'roomname: {roomName}')
+
+print(f'\n{currRoom}')
+while not userInput == 'q':
+  # * Waits for user input and decides what to do.
+  userInput= input('\nChoose a direction: N, S, E, W: ').lower()
+  # If the user enters a cardinal direction, attempt to move to the room there.
+  # Print an error message if the movement isn't allowed.
+  if userInput == 'n': 
+    # check current room for directions
+    if room[currRoom].n_to:
+      print('has N')
+      player.current_room= room[currRoom].n_to
+      print(f'next room: { room[currRoom].n_to}')
+      print(f'\n{currRoom}')
+    else: print('\nCannot go North from here, try again')
+
+  elif userInput == 's': 
+      # check current room for directions
+      if room[currRoom].s_to:
+        print('has S')
+      else: print('\nCannot go South from here, try again')
+
+  elif userInput == 'e':
+      # check current room for directions
+      if room[currRoom].e_to:
+        print('has E')
+      else: print('\nCannot go East from here, try again')
+
+  elif userInput == 'w':
+      # check current room for directions
+      if room[currRoom].w_to:
+        print('has W')
+      else: print('\nCannot go West from here, try again')
+
+  elif userInput == 'q':
+    print('\n*** Good Bye!! ***\n')
+    sys.exit(1)
+
+  else: 
+    print('\nCannot move in that direction, try again\n')
+
 # If the user enters "q", quit the game.
