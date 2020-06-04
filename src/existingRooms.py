@@ -1,9 +1,10 @@
 from room import Room
+from existingItems import item
 
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons", n="foyer"),
+    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons", n="foyer", items= [item['book'], item['sword']]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east.""", n="overlook", s="outside", e="narrow"),

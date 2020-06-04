@@ -1,5 +1,6 @@
 import sys
 from player import Player
+from existingRooms import room
 
 # Link rooms together
 
@@ -24,6 +25,14 @@ userInput = None
 # * Prints the current description (the textwrap module might be useful here).
 print(f'\nCurrent Location: {player.current_room.name}')
 print(f' {player.current_room.description}')
+
+# items
+if player.current_room.items:
+  print(f'\nAs you look around you see:')
+  for item in player.current_room.items:
+    print(f'{item.name}: ')
+    print(f' {item.description}')
+else: print('no items in this room')
 
 while not userInput == 'q':
     # * Waits for user input and decides what to do.

@@ -9,7 +9,7 @@ class Player:
 
     def displayTravelInfo(self, dir):
       print(f'\nYou head {dir},')
-      print(f'You arrive: {self.current_room}')
+      print(f'You arrive: {self.current_room.name}')
 
     def changeRooms(self, direction):
       dir= (direction).lower()
