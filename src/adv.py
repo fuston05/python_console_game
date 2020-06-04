@@ -53,7 +53,7 @@ player = Player("Scott", room['outside'])
 
 # Write a loop that:
 
-userInput= 0
+userInput= None
 
 # while not userInput == 'q':
 currRoom= player.current_room
@@ -62,10 +62,8 @@ currRoom= player.current_room
 
 
 # * Prints the current description (the textwrap module might be useful here).
-roomName = (key for key, val in room.items())
-print(f'roomname: {roomName}')
-
-print(f'\n{currRoom}')
+print(f'\nLocation: {currRoom.name}')
+print(f' {currRoom.description}')
 while not userInput == 'q':
   # * Waits for user input and decides what to do.
   userInput= input('\nChoose a direction: N, S, E, W: ').lower()
@@ -73,29 +71,34 @@ while not userInput == 'q':
   # Print an error message if the movement isn't allowed.
   if userInput == 'n': 
     # check current room for directions
-    if room[currRoom].n_to:
-      print('has N')
-      player.current_room= room[currRoom].n_to
-      print(f'next room: { room[currRoom].n_to}')
-      print(f'\n{currRoom}')
+    if player.current_room.n_to:
+      print('\nYou head north.')
+      player.current_room= room[player.current_room.n_to]
+      print(f'You arrive: {player.current_room}')
     else: print('\nCannot go North from here, try again')
 
   elif userInput == 's': 
       # check current room for directions
-      if room[currRoom].s_to:
-        print('has S')
+      if player.current_room.s_to:
+        print('You head South.')
+        player.current_room= room[player.current_room.s_to]
+        print(f'You arrive: {player.current_room}')
       else: print('\nCannot go South from here, try again')
 
   elif userInput == 'e':
       # check current room for directions
-      if room[currRoom].e_to:
-        print('has E')
+      if player.current_room.e_to:
+        print('You head East.')
+        player.current_room= room[player.current_room.e_to]
+        print(f'You arrive: {player.current_room}')
       else: print('\nCannot go East from here, try again')
 
   elif userInput == 'w':
       # check current room for directions
-      if room[currRoom].w_to:
-        print('has W')
+      if player.current_room.w_to:
+        print('You head West.')
+        player.current_room= room[player.current_room.w_to]
+        print(f'You arrive: {player.current_room}')
       else: print('\nCannot go West from here, try again')
 
   elif userInput == 'q':
