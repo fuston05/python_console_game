@@ -3,16 +3,17 @@
 from existingRooms import room
 
 class Player:
-    def __init__(self, name, current_room= room['outside']):
+    def __init__(self, name, current_room= room['outside'], inventory= None):
         self.name = name
         self.current_room = current_room
+        self.inventory= inventory
 
     def displayTravelInfo(self, dir):
       print(f'\nYou head {dir},')
       print(f'You arrive: {self.current_room.name}')
 
     def changeRooms(self, direction):
-      dir= (direction).lower()
+      dir= (direction)
 
       if dir == 'n':
         # check if North is an option from current room
