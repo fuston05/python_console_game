@@ -17,8 +17,8 @@ from player import Player
 #
 
 # Make a new player object that is currently in the 'outside' room.
+# default starting room 'outside' is set in the Player class itself
 player = Player("Scott")
-
 userInput = None
 
 # * Prints the current description (the textwrap module might be useful here).
@@ -26,23 +26,13 @@ print(f'\nCurrent Location: {player.current_room.name}')
 print(f' {player.current_room.description}')
 
 while not userInput == 'q':
-
     # * Waits for user input and decides what to do.
-    userInput = input(
-        '\nChoose a direction: N, S, E, W, "Q" to quit: ').lower()
+    userInput = input('\nChoose a direction: N, S, E, W, "Q" to quit: ').lower()
+
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
-    if userInput == 'n':
-        player.changeRooms('n')
-
-    elif userInput == 's':
-        player.changeRooms('s')
-
-    elif userInput == 'e':
-      player.changeRooms('e')
-
-    elif userInput == 'w':
-      player.changeRooms('w')
+    if userInput == 'n' or 's' or 'e' or 'w':
+      player.changeRooms(userInput)
 
     elif userInput == 'q':
         print('\n*** Good Bye!! ***\n')
