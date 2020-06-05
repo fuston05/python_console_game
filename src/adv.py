@@ -44,17 +44,23 @@ while not userInput == 'q':
         print(f'action: {action}')
         print(f'noun: {noun}')
 
-        if action == 'grab' or action == 'take':
+        if action == 'grab' or action == 'g' or action == 'take' or action == 't':
             player.getItem(noun)
-        elif str(action) == 'drop':
-          print('drop hit')
-          player.dropItem(noun)
+
+        elif action == 'drop' or action == 'd':
+            print('drop hit')
+            player.dropItem(noun)
 
     # if a single word input was given
     elif len(userInput.split()) == 1:
+        print(f'userInput: {userInput}')
         # sigel iput commands
-        if userInput == 'n' or 's' or 'e' or 'w':
+        if userInput == 'n' or userInput == 'north' or userInput == 's' or  userInput == 'south' or userInput == 'e' or userInput == 'east' or userInput == 'w' or userInput == 'west':
             player.changeRooms(userInput)
+
+        elif userInput == 'inventory' or userInput == 'i':
+            print('inventory called')
+            player.dispPlayerInventory()
 
         elif userInput == 'q':
             print('\n*** Good Bye!! ***\n')
