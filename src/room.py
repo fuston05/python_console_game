@@ -16,10 +16,10 @@ class Room:
         if player.current_room.items:
             print(f'\nAs you look around you see:')
             for item in player.current_room.items:
-                print(f'{item.name}: ')
-                print(f' {item.description}')
+                print(f'   {item.name}: ')
+                print(f'      {item.description}')
         else:
-            print('no items in this room')
-            
+            print('\nNo items in this room')
+
     def __str__(self):
         return f'{self.name}: {self.description}'

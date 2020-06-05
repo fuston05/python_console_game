@@ -10,34 +10,58 @@ class Player:
         self.current_room = current_room
         self.inventory = inventory
 
+    def whereAmI(self):
+        print(
+            f'\n You look around eventually reaize you are at: {self.current_room.name}: ')
+        print(f'   {self.current_room.description}')
+
     def dispPlayerInventory(self):
-      if len(self.inventory) >= 1:
-        count= 1
-        for i in self.inventory:
-          print(f'item_{count}: {i}')
-      else: print('Nothing in inventory')
+        if len(self.inventory) >= 1:
+            count = 1
+            for i in self.inventory:
+                print(f'\nitem_{count}: {i}')
+        else:
+            print('\nNothing in inventory')
 
     def getItem(self, item):
         rem = None
         room = self.current_room
-        rmItems =room.items
+        rmItems = room.items
 
         for i in rmItems:
             if i.name == item:
                 rem = i
         if rem:
-            # remove item from current room items
-            self.inventory.append(rem)
-            rmItems.remove(rem)
             # add item to player inventory
-            self.dispPlayerInventory()
+            self.inventory.append(rem)
+            rem.on_take(rem)
+            # remove item from current room items
+            rmItems.remove(rem)
         else:
-            print('\nCannot take that, try again')
-        
+            print('\nItem is not in this room')
+
+    def dropItem(self, item):
+        rem: None
+        inv = self.inventory
+        for i in inv:
+            if i.name == item:
+                rem = i
+        if rem:
+            # on_drop method from Item
+            i.on_drop(i)
+            # remove from player inventory
+            self.inventory.remove(i)
+            # add item to room items
+            self.current_room.items.append(i)
+            self.current_room.dispRoomItems(self)
+
+            self.dispPlayerInventory()
+
 
     def displayTravelInfo(self, dir):
         print(f'\nYou head {dir},')
-        print(f'You arrive: {self.current_room.name}')
+        print(f'  You arrive at the {self.current_room.name}: ')
+        print(f'    {self.current_room.description}')
 
     def changeRooms(self, direction):
         dir = (direction)
@@ -48,6 +72,8 @@ class Player:
                 # set the new current_room
                 self.current_room = room[self.current_room.n_to]
                 self.displayTravelInfo('North')
+                # display room items when you first enter
+                self.current_room.dispRoomItems(self)
             else:
                 print('\nCannot go North from here, try again')
 
