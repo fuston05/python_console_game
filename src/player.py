@@ -1,7 +1,6 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 from existingRooms import room
-from existingItems import item
 
 
 class Player:
@@ -20,10 +19,12 @@ class Player:
             count = 1
             for i in self.inventory:
                 print(f'\nitem_{count}: {i}')
+                count += 1
         else:
             print('\nNothing in inventory')
 
     def getItem(self, item):
+        # if item is in current room
         rem = None
         room = self.current_room
         rmItems = room.items
@@ -32,15 +33,32 @@ class Player:
             if i.name == item:
                 rem = i
         if rem:
-            # add item to player inventory
-            self.inventory.append(rem)
-            rem.on_take(rem)
-            # remove item from current room items
-            rmItems.remove(rem)
+            if not rem.is_global:
+                # add item to player inventory
+                self.inventory.append(rem)
+                rem.owner = self
+                rem.on_take(rem)
+                # remove item from current room items
+                rmItems.remove(rem)
+            else: 
+              print('You cannot "take" that. Maybe try "use"?')
         else:
             print('\nItem is not in this room')
 
+    def useItem(self, item):
+        # if item is in the current room
+        rem = None
+        room = self.current_room
+        rmItems = room.items
+
+        for i in rmItems:
+            if i.name == item:
+                rem = i
+        if rem:
+            rem.on_use(self)
+
     def dropItem(self, item):
+        # if item is in inventory
         rem: None
         inv = self.inventory
         for i in inv:
@@ -51,12 +69,12 @@ class Player:
             i.on_drop(i)
             # remove from player inventory
             self.inventory.remove(i)
+            rem.owner = None
             # add item to room items
             self.current_room.items.append(i)
             self.current_room.dispRoomItems(self)
 
             self.dispPlayerInventory()
-
 
     def displayTravelInfo(self, dir):
         print(f'\nYou head {dir},')
@@ -108,6 +126,10 @@ class Player:
             # if input direction is not an option from current room
             # or if unrecognized input
             print('\nCannot move in that direction, try again\n')
+
+    def forceTravel(self, location):
+      self.current_room= room[location]
+      self.whereAmI()
 
     def __str__(self):
         return f'{self.name}: Room: {self.current_room}, methods: {self.changeRooms}'

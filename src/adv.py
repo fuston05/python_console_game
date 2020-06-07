@@ -12,7 +12,8 @@ from existingItems import item
 # room['overlook'].s_to = room['foyer']
 # room['narrow'].w_to = room['foyer']
 # room['narrow'].n_to = room['treasure']
-# room['treasure'].s_to = room['narrow']
+# room['treasure'].n_to = room['portal']
+# room['portal'].s_to = room['treasure']
 
 #
 # Main
@@ -48,8 +49,9 @@ while not userInput == 'q':
             player.getItem(noun)
 
         elif action == 'drop' or action == 'd':
-            print('drop hit')
             player.dropItem(noun)
+        elif action == 'u' or action == 'use':
+            player.useItem(noun)
 
     # if a single word input was given
     elif len(userInput.split()) == 1:
