@@ -2,23 +2,27 @@
 # description attributes.
 
 class Room:
-    def __init__(self, name, description, n=None, s=None, e=None, w=None, p= None, items=[]):
+    def __init__(self, name, description, n=None, s=None, e=None, w=None, items=[], is_lit=False):
         self.name = name
         self.description = description
         self.n_to = n
         self.s_to = s
         self.e_to = e
         self.w_to = w
-        self.p_to= None
         self.items = items
+        self.is_lit = is_lit
 
     def dispRoomItems(self, player):
-        # items
+        # if there are items in the room
         if player.current_room.items:
-            print(f'\nAs you look around you see:')
-            for item in player.current_room.items:
-                print(f'   {item.name}: ')
-                print(f'      {item.description}')
+            # if room or player has light
+            if self.is_lit == True:
+                print(f'\nAs you look around you see:')
+                for item in player.current_room.items:
+                    print(f'   {item.name}: ')
+                    print(f'      {item.description}')
+            # if no light
+            else: print('\nYou cannot see anything, it\'s too dark.')
         else:
             print('\nNo items in this room')
 
