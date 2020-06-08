@@ -22,7 +22,8 @@ class Room:
                     print(f'   {item.name}: ')
                     print(f'      {item.description}')
             # if no light
-            else: print('\nYou cannot see anything, it\'s too dark.')
+            else:
+                print('\nYou cannot see anything, it\'s too dark.')
         else:
             print('\nNo items in this room')
 

@@ -98,7 +98,8 @@ class Player:
             self.displayTravelInfo('North')
             # display room items when you first enter
             self.current_room.dispRoomItems(self)
-        else: print('\nYou cannot go that direction, try again')
+        else:
+            print('\nYou cannot go that direction, try again')
 
     def forceTravel(self, location):
         self.current_room = room[location]
