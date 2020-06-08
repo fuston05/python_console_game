@@ -39,37 +39,37 @@ while not userInput == 'q':
     if len(userInput.split()) == 2:
         userInput = userInput.split()
         # dual input commands
-        action = userInput[0].lower().strip()
+        # grab 1st letter
+        action = userInput[0][0].lower().strip()
         noun = userInput[1].lower().strip()
 
-        print(f'action: {action}')
-        print(f'noun: {noun}')
+        if action == 'g' or action == 't':
+            player.takeItem(noun)
 
-        if action == 'grab' or action == 'g' or action == 'take' or action == 't':
-            player.getItem(noun)
-
-        elif action == 'drop' or action == 'd':
+        elif action == 'd':
             player.dropItem(noun)
-        elif action == 'u' or action == 'use':
+        elif action == 'u':
             player.useItem(noun)
+        
+        # unrecognized input
+        else: 
+          print('\nDid not recognize that command. Try again.')
 
     # if a single word input was given
     elif len(userInput.split()) == 1:
-        print(f'userInput: {userInput}')
-        # sigel iput commands
-        if userInput == 'n' or userInput == 'north' or userInput == 's' or  userInput == 'south' or userInput == 'e' or userInput == 'east' or userInput == 'w' or userInput == 'west':
-            player.changeRooms(userInput)
+        # grab 1st letter
+        firstInput= userInput[0]
+        # single input commands
+        if firstInput == 'n' or firstInput == 's' or firstInput == 'e' or firstInput == 'w':
+            dir= firstInput
+            player.changeRooms(dir)
 
-        elif userInput == 'inventory' or userInput == 'i':
-            print('inventory called')
+        elif firstInput == 'i':
             player.dispPlayerInventory()
 
-        elif userInput == 'q':
+        elif firstInput == 'q':
             print('\n*** Good Bye!! ***\n')
             sys.exit(1)
 
     else:
         print('\nInvalid command, try again')
-
-    # If the user enters a cardinal direction, attempt to move to the room there.
-    # Print an error message if the movement isn't allowed.
