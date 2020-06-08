@@ -19,57 +19,66 @@ from existingItems import item
 # Main
 #
 
-# Make a new player object that is currently in the 'outside' room.
 # default starting room 'outside' is set in the Player class itself
 player = Player("Scott", inventory=[item['torch']])
 userInput = None
 
-# * Prints the current description (the textwrap module might be useful here).
-# print(f'\nCurrent Location: {player.current_room.name}')
-# print(f' {player.current_room.description}')
 player.whereAmI()
 player.current_room.dispRoomItems(player)
 
 while not userInput == 'q':
     # * Waits for user input and decides what to do.
     userInput = input(
-        '\nChoose a direction: N, S, E, W, "Q" to quit: ').lower()
+        '\nChoose a direction: N, S, E, W, "Q" to quit: ').lower().strip()
 
     # if a 2 word input was given
     if len(userInput.split()) == 2:
+        # split user input into 2 words
         userInput = userInput.split()
-        # dual input commands
-        # grab 1st letter
-        action = userInput[0][0].lower().strip()
-        noun = userInput[1].lower().strip()
 
+        # two word commands
+        # grab 1st letter of the action "use, take, drop"
+        action = userInput[0][0]
+        noun = userInput[1]
+
+        # grab or take
         if action == 'g' or action == 't':
             player.takeItem(noun)
 
+        # drop
         elif action == 'd':
             player.dropItem(noun)
+        # use
         elif action == 'u':
             player.useItem(noun)
-        
+
         # unrecognized input
-        else: 
-          print('\nDid not recognize that command. Try again.')
+        else:
+            print('\nDid not recognize that command. Try again.')
 
     # if a single word input was given
     elif len(userInput.split()) == 1:
         # grab 1st letter
-        firstInput= userInput[0]
+        firstInput = userInput[0]
         # single input commands
+        # directions: accepts full words (North, South etc)
         if firstInput == 'n' or firstInput == 's' or firstInput == 'e' or firstInput == 'w':
-            dir= firstInput
+            dir = firstInput
             player.changeRooms(dir)
 
         elif firstInput == 'i':
             player.dispPlayerInventory()
 
+        # quit or 'q'
         elif firstInput == 'q':
             print('\n*** Good Bye!! ***\n')
             sys.exit(1)
 
+        # unrecognized input
+        else:
+            print('\nDid not recognize that command. Try again.')
+
     else:
-        print('\nInvalid command, try again')
+        # if input is more than 2 words
+        # todo: add a help menu to show cammand options
+        print('\nInvalid command format, try again')
