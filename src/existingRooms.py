@@ -1,5 +1,6 @@
 from room import Room
 from existingItems import item
+from existingGlobalItems import globalItem
 
 # Declare all the rooms
 # Room("name", "description", "n", "s", "e", "w", )
@@ -16,5 +17,5 @@ passages run north and east.""", n="overlook", s="outside", e="narrow", items=[i
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south.""", n='portal', s="narrow", items=[item['bag']], is_lit=True),
 
-    'portal': Room("Portal Room", """As you approach you see a glowing blue light that seems to be producing a low whirring sound. It's coming from a large magical portal in the center of the room. The only way out is back to the South... or is it?""", s="treasure", items=[item['portal']], is_lit=True),
+    'portal': Room("Portal Room", """As you approach you see a glowing blue light that seems to be producing a low whirring sound. It's coming from a large magical portal in the center of the room. The only way out is back to the South... or is it?""", s="treasure", items=[globalItem['portal']], is_lit=True),
 }

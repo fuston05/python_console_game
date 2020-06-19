@@ -1,4 +1,5 @@
 from existingRooms import room
+from existingGlobalItems import globalItem
 
 
 class Player:
@@ -11,12 +12,13 @@ class Player:
         if len(self.inventory) >= 1:
             count = 1
             for i in self.inventory:
-                print(f'\nitem_{count}: {i}')
+                print(f'\n item_{count}: {i}')
                 count += 1
         else:
             print('\nNothing in inventory')
 
     def takeItem(self, item):
+        # **** TO-DO : cannot 'take' a global item. ****
         # if item is in current room
         rem = None
         room = self.current_room
@@ -26,7 +28,8 @@ class Player:
             if i.name == item:
                 rem = i
         if rem:
-            if not rem.is_useable:
+            # can't 'take' global items
+            if not rem.is_global:
                 # add item to player inventory
                 self.inventory.append(rem)
                 rem.owner = self
@@ -34,26 +37,53 @@ class Player:
                 # remove item from current room items
                 rmItems.remove(rem)
             else:
-                print('You cannot "take" that. Maybe try "use"?')
+                print('\nYou cannot "take" that. Maybe try "use"?')
         else:
             print('\nItem is not in this room')
 
-    def useItem(self, item):
-        rem = None
+    def is_inRoom(self, item):
         room = self.current_room
-        plrInv = self.inventory
         rmItems = room.items
-
         # if item is in current room
         for i in rmItems:
             if i.name == item:
-                rem = i
+                return i
+        return False
+
+    def is_inInventory(self, item):
+        plrInv = self.inventory
         # if item is in player inventory
-        for j in plrInv:
-            if j.name == item:
-                rem = j
-        if rem:
-            rem.on_use(self)
+        for i in plrInv:
+            # if item is not in player invnetory
+            if i.name == item:
+                return i
+        return False
+
+    def useItem(self, item):
+        # ** to use an item:
+        # must be in room, is_global
+        # must be in inv,
+        # if item is in current room
+        if self.is_inRoom(item):
+            # if in room, its useable IF it's a global item
+            curItem = self.is_inRoom(item)
+
+            # is item a global item
+            if curItem.is_global:
+                curItem.on_use(self)
+            # if NOT a global item
+            else:
+                print('\nYou cannot "use" that')
+
+        # otherwise if item is not in the room,
+        # but it's in player inv, it can be used
+        elif self.is_inInventory(item):
+            curItem = self.is_inInventory(item)
+            curItem.on_use(self)
+        # if item is not in room and not in player inventory
+        else:
+            curItem = None
+            print('\nYou cannot use that.')
 
     def dropItem(self, item):
         rem: None
